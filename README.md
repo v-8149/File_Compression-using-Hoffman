@@ -1,1 +1,1 @@
-# File_Compression-using-Hoffman
+This project implements file compression using Huffman coding, a lossless data compression algorithm that reduces file size by encoding frequently occurring characters with shorter bit sequences. The compressed file can later be decompressed to recover the original text without any data loss.
