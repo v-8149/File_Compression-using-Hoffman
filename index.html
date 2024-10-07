@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Compression</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload a File for Compression</h1>
+    <form id="uploadForm" action="/compress" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".txt" required>
+        <button type="submit">Compress</button>
+    </form>
+    <div class="response" id="response"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+            fetch('/compress', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('response').innerHTML = `
+                    <h3>Success!</h3>
+                    <p>Compressed file available at: <a href="${data.compressedFile}" download>Download</a></p>
+                    <p>Original text: <pre>${data.decompressedText}</pre></p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('response').innerHTML = `<p>Error: ${error.message}</p>`;
+            });
+        });
+    </script>
+</body>
+</html>
